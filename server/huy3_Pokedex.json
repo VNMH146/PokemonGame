@@ -1,0 +1,41 @@
+[
+  {
+    "ID": "#0001",
+    "Name": "Bulbasaur",
+    "Level": 1,
+    "Exp": 0,
+    "types": [
+      "Grass",
+      "Poison"
+    ],
+    "URL": "/pokedex/bulbasaur",
+    "Poke-Information": {
+      "HP": 45,
+      "ATK": 49,
+      "DEF": 49,
+      "Sp.Atk": 65,
+      "Sp.Def": 65,
+      "Speed": 45,
+      "Type-Defenses": {
+        "Normal": 1,
+        "Fire": 2,
+        "Water": 0.5,
+        "Electric": 0.5,
+        "Grass": 0.25,
+        "Ice": 2,
+        "Fighting": 0.5,
+        "Poison": 1,
+        "Ground": 1,
+        "Flying": 2,
+        "Psychic": 2,
+        "Bug": 1,
+        "Rock": 1,
+        "Ghost": 1,
+        "Dragon": 1,
+        "Dark": 1,
+        "Steel": 1,
+        "Fairy": 0.5
+      }
+    }
+  }
+]
