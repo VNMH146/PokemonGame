@@ -1,39 +1,194 @@
 [
   {
-    "ID": "#0004",
-    "Name": "Charmander",
+    "ID": "#0001",
+    "Name": "Bulbasaur",
     "Level": 1,
     "Exp": 0,
     "types": [
-      "Fire"
+      "Grass",
+      "Poison"
     ],
-    "URL": "/pokedex/charmander",
+    "URL": "/pokedex/bulbasaur",
     "Poke-Information": {
-      "HP": 39,
-      "ATK": 52,
-      "DEF": 43,
-      "Sp.Atk": 60,
-      "Sp.Def": 50,
-      "Speed": 65,
+      "HP": 45,
+      "ATK": 49,
+      "DEF": 49,
+      "Sp.Atk": 65,
+      "Sp.Def": 65,
+      "Speed": 45,
       "Type-Defenses": {
         "Normal": 1,
-        "Fire": 0.5,
-        "Water": 2,
+        "Fire": 2,
+        "Water": 0.5,
+        "Electric": 0.5,
+        "Grass": 0.25,
+        "Ice": 2,
+        "Fighting": 0.5,
+        "Poison": 1,
+        "Ground": 1,
+        "Flying": 2,
+        "Psychic": 2,
+        "Bug": 1,
+        "Rock": 1,
+        "Ghost": 1,
+        "Dragon": 1,
+        "Dark": 1,
+        "Steel": 1,
+        "Fairy": 0.5
+      }
+    }
+  },
+  {
+    "ID": "#0953",
+    "Name": "Rellor",
+    "Level": 1,
+    "Exp": 0,
+    "types": [
+      "Bug"
+    ],
+    "URL": "/pokedex/rellor",
+    "Poke-Information": {
+      "HP": 41,
+      "ATK": 50,
+      "DEF": 60,
+      "Sp.Atk": 31,
+      "Sp.Def": 58,
+      "Speed": 30,
+      "Type-Defenses": {
+        "Normal": 1,
+        "Fire": 2,
+        "Water": 1,
         "Electric": 1,
         "Grass": 0.5,
-        "Ice": 0.5,
-        "Fighting": 1,
+        "Ice": 1,
+        "Fighting": 0.5,
         "Poison": 1,
-        "Ground": 2,
-        "Flying": 1,
+        "Ground": 0.5,
+        "Flying": 2,
         "Psychic": 1,
-        "Bug": 0.5,
+        "Bug": 1,
         "Rock": 2,
         "Ghost": 1,
         "Dragon": 1,
         "Dark": 1,
+        "Steel": 1,
+        "Fairy": 1
+      }
+    }
+  },
+  {
+    "ID": "#0531",
+    "Name": "Audino",
+    "Level": 1,
+    "Exp": 0,
+    "types": [
+      "Normal"
+    ],
+    "URL": "/pokedex/audino",
+    "Poke-Information": {
+      "HP": 103,
+      "ATK": 60,
+      "DEF": 126,
+      "Sp.Atk": 80,
+      "Sp.Def": 126,
+      "Speed": 50,
+      "Type-Defenses": {
+        "Normal": 1,
+        "Fire": 1,
+        "Water": 1,
+        "Electric": 1,
+        "Grass": 1,
+        "Ice": 1,
+        "Fighting": 1,
+        "Poison": 2,
+        "Ground": 1,
+        "Flying": 1,
+        "Psychic": 1,
+        "Bug": 0.5,
+        "Rock": 1,
+        "Ghost": 0,
+        "Dragon": 0,
+        "Dark": 0.5,
+        "Steel": 2,
+        "Fairy": 1
+      }
+    }
+  },
+  {
+    "ID": "#0625",
+    "Name": "Bisharp",
+    "Level": 1,
+    "Exp": 0,
+    "types": [
+      "Dark",
+      "Steel"
+    ],
+    "URL": "/pokedex/bisharp",
+    "Poke-Information": {
+      "HP": 65,
+      "ATK": 125,
+      "DEF": 100,
+      "Sp.Atk": 60,
+      "Sp.Def": 70,
+      "Speed": 70,
+      "Type-Defenses": {
+        "Normal": 0.5,
+        "Fire": 2,
+        "Water": 1,
+        "Electric": 1,
+        "Grass": 0.5,
+        "Ice": 0.5,
+        "Fighting": 4,
+        "Poison": 0,
+        "Ground": 2,
+        "Flying": 0.5,
+        "Psychic": 0,
+        "Bug": 1,
+        "Rock": 0.5,
+        "Ghost": 0.5,
+        "Dragon": 0.5,
+        "Dark": 0.5,
         "Steel": 0.5,
-        "Fairy": 0.5
+        "Fairy": 1
+      }
+    }
+  },
+  {
+    "ID": "#0340",
+    "Name": "Whiscash",
+    "Level": 1,
+    "Exp": 0,
+    "types": [
+      "Water",
+      "Ground"
+    ],
+    "URL": "/pokedex/whiscash",
+    "Poke-Information": {
+      "HP": 110,
+      "ATK": 78,
+      "DEF": 73,
+      "Sp.Atk": 76,
+      "Sp.Def": 71,
+      "Speed": 60,
+      "Type-Defenses": {
+        "Normal": 1,
+        "Fire": 0.5,
+        "Water": 1,
+        "Electric": 0,
+        "Grass": 4,
+        "Ice": 1,
+        "Fighting": 1,
+        "Poison": 0.5,
+        "Ground": 1,
+        "Flying": 1,
+        "Psychic": 1,
+        "Bug": 1,
+        "Rock": 0.5,
+        "Ghost": 1,
+        "Dragon": 1,
+        "Dark": 1,
+        "Steel": 0.5,
+        "Fairy": 1
       }
     }
   }

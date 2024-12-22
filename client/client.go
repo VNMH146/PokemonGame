@@ -21,7 +21,9 @@ func main() {
 		return
 	}
 	defer conn.Close()
+
 	reader := bufio.NewReader(os.Stdin)
+
 	for {
 		fmt.Print("Enter your username: ")
 		username, _ := reader.ReadString('\n')
@@ -34,45 +36,24 @@ func main() {
 		buffer := make([]byte, 1024)
 		n, _, err := conn.ReadFromUDP(buffer)
 		if err != nil {
-			fmt.Println("Error read from UDP: ", err)
+			fmt.Println("Error reading from UDP:", err)
 			return
 		}
 		if string(buffer[:n]) == "Invalid" {
-			fmt.Println("Username had used, please set a other username!")
+			fmt.Println("Username already used, please choose another!")
 		} else {
 			fmt.Println(string(buffer[:n]))
 			break
 		}
 	}
-	for {
-		fmt.Print("Choose your begining pokemon\n1. Bulbasaur\n2. Charmander\n3. Squirtle\nYour choice(input 1, 2, or 3): ")
-		choose, err := reader.ReadString('\n')
-		if err != nil {
-			fmt.Println("Error to read the choosen pokemon: ", err)
-			return
-		}
-		choose = strings.TrimSpace(choose)
-		conn.Write([]byte("@choose " + choose))
-		buffer := make([]byte, 1024)
-		n, _, err := conn.ReadFromUDP(buffer)
-		if err != nil {
-			fmt.Println("Error read from UDP: ", err)
-			return
-		}
-		if string(buffer[:n]) == "Cannot" {
-			fmt.Println("Wrong Syntax! Try again")
-		} else {
-			fmt.Print("You choose correctly! Now try some option!\nUsages:\n" +
-				"@bag to open your pokedex\n" +
-				"@catch to getx10 pokemon\n" +
-				"@list to list the players\n" +
-				"@invite +username to join the battle\n" +
-				"@quit to quit the game\n" +
-				"@search to search pokemon from pokedex\n" +
-				"Enter your choice: ")
-			break
-		}
-	}
+
+	fmt.Print("Joined the game! You have one Bulbasaur,open your bag to check!\nUsages:\n" +
+		"@bag to open your pokedex\n" +
+		"@catch to catch 4 Pokemon\n" +
+		"@list to list the players\n" +
+		"@invite +username to join the battle\n" +
+		"@quit to quit the game\n" +
+		"Enter your choice: ")
 
 	go receiveMessages(conn)
 
@@ -81,14 +62,13 @@ func main() {
 		text = strings.TrimSpace(text)
 		_, err := conn.Write([]byte(text))
 		if err != nil {
-			fmt.Println("Error sending message: ", err)
+			fmt.Println("Error sending message:", err)
 			return
 		}
 		if strings.Split(text, " ")[0] == "@battle" {
 			break
 		}
 	}
-
 }
 
 func receiveMessages(conn *net.UDPConn) {
@@ -100,7 +80,7 @@ func receiveMessages(conn *net.UDPConn) {
 			return
 		}
 		fmt.Println(string(buffer[:n]))
-		if string(buffer[:n]) == "You out the game" {
+		if string(buffer[:n]) == "You are out of the game" {
 			os.Exit(0)
 			break
 		}

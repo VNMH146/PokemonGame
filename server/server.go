@@ -124,15 +124,36 @@ func handleMessage(message string, addr *net.UDPAddr, conn *net.UDPConn) {
 			} else {
 				username := parts[1]
 				clients[username] = &Client{Name: username, Addr: addr}
+
+				// Init a default Pokemon
+				OpenFile("data/pokedex.json", &pokedex)
+				for _, poke := range pokedex {
+					if poke.Id == "#0001" {
+						clients[username].userCurrentPoke = poke
+						clients[username].userCurrentPoke.Level = 1
+						clients[username].userPokedex = append(clients[username].userPokedex, clients[username].userCurrentPoke)
+						break
+					}
+				}
+
 				fmt.Printf("User [%s] joined\n", username)
+				sendMessageToClient("["+username+"] Welcome to game POKE BATTLE", addr, conn)
+			}
+
+			if checkExist(parts[1]) {
+				sendMessageToClient("Invalid", addr, conn)
+			} else {
+				username := parts[1]
+				clients[username] = &Client{Name: username, Addr: addr}
+				fmt.Printf("Player [%s] joined\n", username)
 				sendMessageToClient("["+username+"] Welcome to game POKE BATTLE", addr, conn)
 			}
 		case "@quit":
 			username := getUsernameByAddr(addr)
 			delete(clients, username)
-			fmt.Print("User [" + username + "] out the game\n")
+			fmt.Print("Player [" + username + "] out the game\n")
 			sendMessageToClient("You are out the game", addr, conn)
-		case "@choose":
+
 			if parts[1] == "1" {
 				OpenFile("data\\pokedex.json", &pokedex)
 				for _, poke := range pokedex {
@@ -167,7 +188,7 @@ func handleMessage(message string, addr *net.UDPAddr, conn *net.UDPConn) {
 				sendMessageToClient("Cannot", addr, conn)
 			}
 			CreateFile(senderName+"_Pokedex.json", client.userPokedex)
-		case "@search":
+
 			if len(parts) != 2 {
 				sendMessageToClient("Invalid command! Please try again!\n", addr, conn)
 			} else {
@@ -183,10 +204,10 @@ func handleMessage(message string, addr *net.UDPAddr, conn *net.UDPConn) {
 
 			}
 		case "@catch":
-			getPoke := Rollx10Poke(client.userCurrentPoke)
+			getPoke := RollPoke(client.userCurrentPoke)
 			ListPokemon := "Your new pokemon:\n"
 			for _, poke := range getPoke {
-				ListPokemon += fmt.Sprintf("[Name: %s --- Level: %d]\n", poke.Name, poke.Level)
+				ListPokemon += fmt.Sprintf("[ID: %s --Name: %s -- Level: %d]\n", poke.Id, poke.Name, poke.Level)
 			}
 			sendMessageToClient(ListPokemon, addr, conn)
 			client.userPokedex = append(client.userPokedex, getPoke...)
@@ -428,9 +449,9 @@ func CreateFile(fileName string, key interface{}) {
 	}
 	fmt.Println(fileName + " updated!")
 }
-func Rollx10Poke(userCurrentPoke Pokedex) []Pokedex {
+func RollPoke(userCurrentPoke Pokedex) []Pokedex {
 	var userPokedex []Pokedex
-	for i := 0; i < 10; i++ {
+	for i := 0; i < 4; i++ {
 		getId := rand.Intn(1025-1) + 1
 		var Idpoke string
 		if getId < 10 {
