@@ -1,0 +1,505 @@
+[
+  {
+    "ID": "#0001",
+    "Name": "Bulbasaur",
+    "Level": 0,
+    "Exp": 0,
+    "types": [
+      "Grass",
+      "Poison"
+    ],
+    "URL": "/pokedex/bulbasaur",
+    "Poke-Information": {
+      "HP": 45,
+      "ATK": 49,
+      "DEF": 49,
+      "Sp.Atk": 65,
+      "Sp.Def": 65,
+      "Speed": 45,
+      "Type-Defenses": {
+        "Normal": 1,
+        "Fire": 2,
+        "Water": 0.5,
+        "Electric": 0.5,
+        "Grass": 0.25,
+        "Ice": 2,
+        "Fighting": 0.5,
+        "Poison": 1,
+        "Ground": 1,
+        "Flying": 2,
+        "Psychic": 2,
+        "Bug": 1,
+        "Rock": 1,
+        "Ghost": 1,
+        "Dragon": 1,
+        "Dark": 1,
+        "Steel": 1,
+        "Fairy": 0.5
+      }
+    }
+  },
+  {
+    "ID": "#0700",
+    "Name": "Sylveon",
+    "Level": 1,
+    "Exp": 0,
+    "types": [
+      "Fairy"
+    ],
+    "URL": "/pokedex/sylveon",
+    "Poke-Information": {
+      "HP": 95,
+      "ATK": 65,
+      "DEF": 65,
+      "Sp.Atk": 110,
+      "Sp.Def": 130,
+      "Speed": 60,
+      "Type-Defenses": {
+        "Normal": 1,
+        "Fire": 1,
+        "Water": 1,
+        "Electric": 1,
+        "Grass": 1,
+        "Ice": 1,
+        "Fighting": 0.5,
+        "Poison": 2,
+        "Ground": 1,
+        "Flying": 1,
+        "Psychic": 1,
+        "Bug": 0.5,
+        "Rock": 1,
+        "Ghost": 1,
+        "Dragon": 0,
+        "Dark": 0.5,
+        "Steel": 2,
+        "Fairy": 1
+      }
+    }
+  },
+  {
+    "ID": "#0148",
+    "Name": "Dragonair",
+    "Level": 1,
+    "Exp": 0,
+    "types": [
+      "Dragon"
+    ],
+    "URL": "/pokedex/dragonair",
+    "Poke-Information": {
+      "HP": 61,
+      "ATK": 84,
+      "DEF": 65,
+      "Sp.Atk": 70,
+      "Sp.Def": 70,
+      "Speed": 70,
+      "Type-Defenses": {
+        "Normal": 1,
+        "Fire": 0.5,
+        "Water": 0.5,
+        "Electric": 0.5,
+        "Grass": 0.5,
+        "Ice": 2,
+        "Fighting": 1,
+        "Poison": 1,
+        "Ground": 1,
+        "Flying": 1,
+        "Psychic": 1,
+        "Bug": 1,
+        "Rock": 1,
+        "Ghost": 1,
+        "Dragon": 2,
+        "Dark": 1,
+        "Steel": 1,
+        "Fairy": 2
+      }
+    }
+  },
+  {
+    "ID": "#0215",
+    "Name": "Sneasel",
+    "Level": 1,
+    "Exp": 0,
+    "types": [
+      "Dark",
+      "Ice"
+    ],
+    "URL": "/pokedex/sneasel",
+    "Poke-Information": {
+      "HP": 55,
+      "ATK": 95,
+      "DEF": 55,
+      "Sp.Atk": 35,
+      "Sp.Def": 75,
+      "Speed": 115,
+      "Type-Defenses": {
+        "Normal": 1,
+        "Fire": 1,
+        "Water": 1,
+        "Electric": 1,
+        "Grass": 0.5,
+        "Ice": 1,
+        "Fighting": 0.5,
+        "Poison": 0.5,
+        "Ground": 2,
+        "Flying": 2,
+        "Psychic": 4,
+        "Bug": 0.25,
+        "Rock": 0.5,
+        "Ghost": 1,
+        "Dragon": 1,
+        "Dark": 0.5,
+        "Steel": 1,
+        "Fairy": 1
+      }
+    }
+  },
+  {
+    "ID": "#0991",
+    "Name": "Iron Bundle",
+    "Level": 1,
+    "Exp": 0,
+    "types": [
+      "Ice",
+      "Water"
+    ],
+    "URL": "/pokedex/iron-bundle",
+    "Poke-Information": {
+      "HP": 56,
+      "ATK": 80,
+      "DEF": 114,
+      "Sp.Atk": 124,
+      "Sp.Def": 60,
+      "Speed": 136,
+      "Type-Defenses": {
+        "Normal": 1,
+        "Fire": 1,
+        "Water": 0.5,
+        "Electric": 2,
+        "Grass": 2,
+        "Ice": 0.25,
+        "Fighting": 2,
+        "Poison": 1,
+        "Ground": 1,
+        "Flying": 1,
+        "Psychic": 1,
+        "Bug": 1,
+        "Rock": 2,
+        "Ghost": 1,
+        "Dragon": 1,
+        "Dark": 1,
+        "Steel": 1,
+        "Fairy": 1
+      }
+    }
+  },
+  {
+    "ID": "#0719",
+    "Name": "Diancie",
+    "Level": 1,
+    "Exp": 0,
+    "types": [
+      "Rock",
+      "Fairy"
+    ],
+    "URL": "/pokedex/diancie",
+    "Poke-Information": {
+      "HP": 50,
+      "ATK": 160,
+      "DEF": 110,
+      "Sp.Atk": 160,
+      "Sp.Def": 110,
+      "Speed": 110,
+      "Type-Defenses": {
+        "Normal": 0.5,
+        "Fire": 0.5,
+        "Water": 2,
+        "Electric": 1,
+        "Grass": 2,
+        "Ice": 1,
+        "Fighting": 1,
+        "Poison": 1,
+        "Ground": 2,
+        "Flying": 0.5,
+        "Psychic": 1,
+        "Bug": 0.5,
+        "Rock": 1,
+        "Ghost": 1,
+        "Dragon": 0,
+        "Dark": 0.5,
+        "Steel": 4,
+        "Fairy": 1
+      }
+    }
+  },
+  {
+    "ID": "#0112",
+    "Name": "Rhydon",
+    "Level": 1,
+    "Exp": 0,
+    "types": [
+      "Ground",
+      "Rock"
+    ],
+    "URL": "/pokedex/rhydon",
+    "Poke-Information": {
+      "HP": 105,
+      "ATK": 130,
+      "DEF": 120,
+      "Sp.Atk": 45,
+      "Sp.Def": 45,
+      "Speed": 40,
+      "Type-Defenses": {
+        "Normal": 0.5,
+        "Fire": 0.5,
+        "Water": 4,
+        "Electric": 0,
+        "Grass": 4,
+        "Ice": 2,
+        "Fighting": 2,
+        "Poison": 0.25,
+        "Ground": 2,
+        "Flying": 0.5,
+        "Psychic": 1,
+        "Bug": 1,
+        "Rock": 0.5,
+        "Ghost": 1,
+        "Dragon": 1,
+        "Dark": 1,
+        "Steel": 2,
+        "Fairy": 1
+      }
+    }
+  },
+  {
+    "ID": "#0721",
+    "Name": "Volcanion",
+    "Level": 1,
+    "Exp": 0,
+    "types": [
+      "Fire",
+      "Water"
+    ],
+    "URL": "/pokedex/volcanion",
+    "Poke-Information": {
+      "HP": 80,
+      "ATK": 110,
+      "DEF": 120,
+      "Sp.Atk": 130,
+      "Sp.Def": 90,
+      "Speed": 70,
+      "Type-Defenses": {
+        "Normal": 1,
+        "Fire": 0.25,
+        "Water": 0,
+        "Electric": 2,
+        "Grass": 1,
+        "Ice": 0.25,
+        "Fighting": 1,
+        "Poison": 1,
+        "Ground": 2,
+        "Flying": 1,
+        "Psychic": 1,
+        "Bug": 0.5,
+        "Rock": 2,
+        "Ghost": 1,
+        "Dragon": 1,
+        "Dark": 1,
+        "Steel": 0.25,
+        "Fairy": 0.5
+      }
+    }
+  },
+  {
+    "ID": "#0252",
+    "Name": "Treecko",
+    "Level": 1,
+    "Exp": 0,
+    "types": [
+      "Grass"
+    ],
+    "URL": "/pokedex/treecko",
+    "Poke-Information": {
+      "HP": 40,
+      "ATK": 45,
+      "DEF": 35,
+      "Sp.Atk": 65,
+      "Sp.Def": 55,
+      "Speed": 70,
+      "Type-Defenses": {
+        "Normal": 1,
+        "Fire": 2,
+        "Water": 0.5,
+        "Electric": 0.5,
+        "Grass": 0.5,
+        "Ice": 2,
+        "Fighting": 1,
+        "Poison": 2,
+        "Ground": 0.5,
+        "Flying": 2,
+        "Psychic": 1,
+        "Bug": 2,
+        "Rock": 1,
+        "Ghost": 1,
+        "Dragon": 1,
+        "Dark": 1,
+        "Steel": 1,
+        "Fairy": 1
+      }
+    }
+  },
+  {
+    "ID": "#0795",
+    "Name": "Pheromosa",
+    "Level": 1,
+    "Exp": 0,
+    "types": [
+      "Bug",
+      "Fighting"
+    ],
+    "URL": "/pokedex/pheromosa",
+    "Poke-Information": {
+      "HP": 71,
+      "ATK": 137,
+      "DEF": 37,
+      "Sp.Atk": 137,
+      "Sp.Def": 37,
+      "Speed": 151,
+      "Type-Defenses": {
+        "Normal": 1,
+        "Fire": 2,
+        "Water": 1,
+        "Electric": 1,
+        "Grass": 0.5,
+        "Ice": 1,
+        "Fighting": 0.5,
+        "Poison": 1,
+        "Ground": 0.5,
+        "Flying": 4,
+        "Psychic": 2,
+        "Bug": 0.5,
+        "Rock": 1,
+        "Ghost": 1,
+        "Dragon": 1,
+        "Dark": 0.5,
+        "Steel": 1,
+        "Fairy": 2
+      }
+    }
+  },
+  {
+    "ID": "#0768",
+    "Name": "Golisopod",
+    "Level": 1,
+    "Exp": 0,
+    "types": [
+      "Bug",
+      "Water"
+    ],
+    "URL": "/pokedex/golisopod",
+    "Poke-Information": {
+      "HP": 75,
+      "ATK": 125,
+      "DEF": 140,
+      "Sp.Atk": 60,
+      "Sp.Def": 90,
+      "Speed": 40,
+      "Type-Defenses": {
+        "Normal": 1,
+        "Fire": 1,
+        "Water": 0.5,
+        "Electric": 2,
+        "Grass": 1,
+        "Ice": 0.5,
+        "Fighting": 0.5,
+        "Poison": 1,
+        "Ground": 0.5,
+        "Flying": 2,
+        "Psychic": 1,
+        "Bug": 1,
+        "Rock": 2,
+        "Ghost": 1,
+        "Dragon": 1,
+        "Dark": 1,
+        "Steel": 0.5,
+        "Fairy": 1
+      }
+    }
+  },
+  {
+    "ID": "#0695",
+    "Name": "Heliolisk",
+    "Level": 1,
+    "Exp": 0,
+    "types": [
+      "Electric",
+      "Normal"
+    ],
+    "URL": "/pokedex/heliolisk",
+    "Poke-Information": {
+      "HP": 62,
+      "ATK": 55,
+      "DEF": 52,
+      "Sp.Atk": 109,
+      "Sp.Def": 94,
+      "Speed": 109,
+      "Type-Defenses": {
+        "Normal": 1,
+        "Fire": 1,
+        "Water": 1,
+        "Electric": 0.5,
+        "Grass": 1,
+        "Ice": 1,
+        "Fighting": 2,
+        "Poison": 1,
+        "Ground": 2,
+        "Flying": 0.5,
+        "Psychic": 1,
+        "Bug": 1,
+        "Rock": 1,
+        "Ghost": 0,
+        "Dragon": 1,
+        "Dark": 1,
+        "Steel": 0.5,
+        "Fairy": 1
+      }
+    }
+  },
+  {
+    "ID": "#0064",
+    "Name": "Kadabra",
+    "Level": 1,
+    "Exp": 0,
+    "types": [
+      "Psychic"
+    ],
+    "URL": "/pokedex/kadabra",
+    "Poke-Information": {
+      "HP": 40,
+      "ATK": 35,
+      "DEF": 30,
+      "Sp.Atk": 120,
+      "Sp.Def": 70,
+      "Speed": 105,
+      "Type-Defenses": {
+        "Normal": 1,
+        "Fire": 1,
+        "Water": 1,
+        "Electric": 1,
+        "Grass": 1,
+        "Ice": 1,
+        "Fighting": 0.5,
+        "Poison": 1,
+        "Ground": 1,
+        "Flying": 1,
+        "Psychic": 0.5,
+        "Bug": 2,
+        "Rock": 1,
+        "Ghost": 2,
+        "Dragon": 1,
+        "Dark": 2,
+        "Steel": 1,
+        "Fairy": 1
+      }
+    }
+  }
+]

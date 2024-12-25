@@ -110,282 +110,338 @@ func handleMessage(message string, addr *net.UDPAddr, conn *net.UDPConn) {
 	mu.Lock()
 	defer mu.Unlock()
 
-	if strings.HasPrefix(message, "@") {
-		parts := strings.Split(message, " ")
-		command := parts[0]
-		senderName := getUsernameByAddr(addr)
+	parts := strings.Split(message, " ")
+	command := parts[0]
+	senderName := getUsernameByAddr(addr)
 
-		client := clients[senderName]
+	client := clients[senderName]
 
-		switch command {
-		case "@join":
-			if checkExist(parts[1]) {
-				sendMessageToClient("Invalid", addr, conn)
-			} else {
-				username := parts[1]
-				clients[username] = &Client{Name: username, Addr: addr}
-
-				// Init a default Pokemon
-				OpenFile("data/pokedex.json", &pokedex)
-				for _, poke := range pokedex {
-					if poke.Id == "#0001" {
-						clients[username].userCurrentPoke = poke
-						clients[username].userCurrentPoke.Level = 1
-						clients[username].userPokedex = append(clients[username].userPokedex, clients[username].userCurrentPoke)
-						break
-					}
-				}
-
-				fmt.Printf("User [%s] joined\n", username)
-				sendMessageToClient("["+username+"] Welcome to game POKE BATTLE", addr, conn)
-			}
-
-			if checkExist(parts[1]) {
-				sendMessageToClient("Invalid", addr, conn)
-			} else {
-				username := parts[1]
-				clients[username] = &Client{Name: username, Addr: addr}
-				fmt.Printf("Player [%s] joined\n", username)
-				sendMessageToClient("["+username+"] Welcome to game POKE BATTLE", addr, conn)
-			}
-		case "@quit":
-			username := getUsernameByAddr(addr)
-			delete(clients, username)
-			fmt.Print("Player [" + username + "] out the game\n")
-			sendMessageToClient("You are out the game", addr, conn)
-
-			if parts[1] == "1" {
-				OpenFile("data\\pokedex.json", &pokedex)
-				for _, poke := range pokedex {
-					if poke.Id == "#0001" {
-						client.userCurrentPoke = poke
-						client.userCurrentPoke.Level = 1
-						client.userPokedex = append(client.userPokedex, client.userCurrentPoke)
-					}
-				}
-				sendMessageToClient("Valid", addr, conn)
-			} else if parts[1] == "2" {
-				OpenFile("data\\pokedex.json", &pokedex)
-				for _, poke := range pokedex {
-					if poke.Id == "#0004" {
-						client.userCurrentPoke = poke
-						client.userCurrentPoke.Level = 1
-						client.userPokedex = append(client.userPokedex, client.userCurrentPoke)
-					}
-				}
-				sendMessageToClient("Valid", addr, conn)
-			} else if parts[1] == "3" {
-				OpenFile("data\\pokedex.json", &pokedex)
-				for _, poke := range pokedex {
-					if poke.Id == "#0007" {
-						client.userCurrentPoke = poke
-						client.userCurrentPoke.Level = 1
-						client.userPokedex = append(client.userPokedex, client.userCurrentPoke)
-					}
-				}
-				sendMessageToClient("Valid", addr, conn)
-			} else {
-				sendMessageToClient("Cannot", addr, conn)
-			}
-			CreateFile(senderName+"_Pokedex.json", client.userPokedex)
-
-			if len(parts) != 2 {
-				sendMessageToClient("Invalid command! Please try again!\n", addr, conn)
-			} else {
-				OpenFile("data\\pokedex.json", &pokedex)
-				for _, poke := range pokedex {
-					if poke.Name == parts[1] {
-						msg := fmt.Sprintf("ID: %s - Name: %s - HP: %d - ATK: %d - DEF: %d - SPEED: %d\n",
-							poke.Id, poke.Name, poke.PokeInfo.Hp, poke.PokeInfo.Atk, poke.PokeInfo.Def, poke.PokeInfo.Speed)
-
-						sendMessageToClient(msg, addr, conn)
-					}
-				}
-
-			}
-		case "@catch":
-			getPoke := RollPoke(client.userCurrentPoke)
-			ListPokemon := "Your new pokemon:\n"
-			for _, poke := range getPoke {
-				ListPokemon += fmt.Sprintf("[ID: %s --Name: %s -- Level: %d]\n", poke.Id, poke.Name, poke.Level)
-			}
-			sendMessageToClient(ListPokemon, addr, conn)
-			client.userPokedex = append(client.userPokedex, getPoke...)
-			CreateFile(senderName+"_Pokedex.json", client.userPokedex)
-		case "@bag":
-			msg := "Your Bag:\n"
-			for _, poke := range client.userPokedex {
-				msg += fmt.Sprintf("ID: %s - Name: %s [Level: %d] - HP: %d - ATK: %d - DEF: %d - SPEED: %d\n",
-					poke.Id, poke.Name, poke.Level, poke.PokeInfo.Hp, poke.PokeInfo.Atk, poke.PokeInfo.Def, poke.PokeInfo.Speed)
-			}
-			sendMessageToClient(msg, addr, conn)
-		case "@pick":
-			if len(parts) != 4 {
-				sendMessageToClient("Invalid input! Please try again!\n", addr, conn)
-			} else {
-				confirm := "Your pokemon choosen:\n"
-				if checkPokeExist(parts[1], parts[2], parts[3], client) {
-					for _, poke := range client.userPokedex {
-						if parts[1] == poke.Id {
-							confirm += poke.Name + " "
-							client.battlePoke = append(client.battlePoke, poke)
-						}
-						if parts[2] == poke.Id {
-							confirm += poke.Name + " "
-							client.battlePoke = append(client.battlePoke, poke)
-						}
-						if parts[3] == poke.Id {
-							confirm += poke.Name + " "
-							client.battlePoke = append(client.battlePoke, poke)
-						}
-					}
-					confirm += "\n(Usage: @play to start!)\n"
-					sendMessageToClient(confirm, addr, conn)
-				} else {
-					sendMessageToClient("Poke you choose is not have in your pokedex!", addr, conn)
-				}
-			}
-		case "@list":
-			competitors := "Current player:\n"
-			for _, user := range clients {
-				if user.Name != senderName {
-					competitors += fmt.Sprintf("[Player: %s]\n", user.Name)
-				}
-			}
-			sendMessageToClient(competitors, addr, conn)
-		case "@invite":
-			for _, user := range clients {
-				if user.Name == parts[1] || parts[1] != senderName { // if exist username like this then
-					for _, bt := range battles {
-						if user == bt {
-							sendMessageToClient(parts[1]+" is in battle, please try later!", addr, conn)
-							return
-						}
-					}
-					invitation[addr.String()] = senderName
-					invitation[user.Addr.String()] = parts[1] // invitation with index string of that user addr ---> get value of part[1]
-
-				} else if parts[1] == senderName {
-					sendMessageToClient("Cannot invite yourself!!!", addr, conn)
-					return
-				}
-			}
-			sendMessageToClient("Waiting for your competitor!", addr, conn)
-			sendPrivateMessage(senderName+" send you a request to battle!(@accept yes/no)\n", parts[1], conn, addr)
-			// I think error happen when 2 clients @invite will add into battle
-		case "@accept":
-			if strings.ToLower(parts[1]) == "yes" {
-				receiverName := invitation[addr.String()]
-				var inviterName string
-				for _, invite := range invitation {
-					if receiverName != invite {
-						inviterName = invite
-					}
-				}
-				for _, user := range clients {
-					if user.Name == inviterName {
-						sendMessageToClient(senderName+" has accepted the battle\n(Usage: @pick #id_pokemon1 #id_pokemon2 #id_pokemon3)\n", user.Addr, conn)
-						battles[user.Addr.String()] = user // inviter client
-
-					}
-					if user.Addr.String() == addr.String() {
-						battles[addr.String()] = user // receiver client
-					}
-				}
-				sendMessageToClient("You are join the battle!\n(Usage: @pick #id_pokemon1 #id_pokemon2 #id_pokemon3)\n", addr, conn)
-			} else if strings.ToLower(parts[1]) == "no" {
-				var inviterName string
-				for _, invite := range invitation {
-					if senderName != invite {
-						inviterName = invite
-					}
-				}
-				for _, user := range clients {
-					if user.Name == inviterName {
-						sendMessageToClient("Your competitor is decline\nChoose another user or other task", user.Addr, conn)
-					}
-				}
-				delete(invitation, addr.String())
-				sendMessageToClient("You decline successfull\nLet continue other tasks\n", addr, conn)
-			} else {
-				sendMessageToClient("Invalid command!\n", addr, conn)
-			}
-		case "@play":
-			player, inBattle := battles[addr.String()]
-			if !inBattle {
-				sendMessageToClient("You are not in the battle! Cannot use this command!", addr, conn)
-				return
-			}
-			gameKey := ""
-			var opponent *Client
-			for _, bat := range battles {
-				if bat.Addr.String() != addr.String() {
-					opponent = battles[bat.Addr.String()]
-					gameKey = fmt.Sprintf("%s:%s", player.Name, opponent.Name)
-				}
-			}
-			if _, inBattle := games[gameKey]; inBattle {
-				sendMessageToClient("A game is already in process.", addr, conn)
-				return
-			}
-			if opponent.battlePoke[0].PokeInfo.Speed > player.battlePoke[0].PokeInfo.Speed {
-				state = opponent.Addr
-			} else {
-				state = player.Addr
-			}
-			sendMessageToClient("You first", state, conn)
-
-			battle := &Battle{
-				Player1:      player,
-				Player2:      opponent,
-				CurrentPoke1: &player.battlePoke[0],
-				CurrentPoke2: &opponent.battlePoke[0],
-				CurrentTurn:  state,
-			}
-			games[gameKey] = battle
-		case "@attack":
-			handleAttack(addr, conn)
-		case "@switch":
-			if len(parts) != 2 {
-				sendMessageToClient("Invalid command!", addr, conn)
-				return
-			}
-			handleSwitch(conn, addr, parts[1])
-		case "@surrender":
-			opponent, inBattle := battles[addr.String()]
-
-			if !inBattle {
-				sendMessageToClient("You are not in the battle! Cannot use this command!", addr, conn)
-				return
-			}
-			var player *Client
-			gameKey := ""
-			for _, bat := range battles {
-				if bat.Addr.String() != addr.String() {
-					player = battles[bat.Addr.String()]
-					gameKey = fmt.Sprintf("%s:%s", player.Name, opponent.Name)
-				}
-			}
-			game, inGame := games[gameKey]
-			if !inGame {
-				sendMessageToClient("You are not already\n(Usage: @play to ready the battle)", addr, conn)
-				return
-			}
-
-			winner := player
-			loser := opponent
-			conn.WriteToUDP([]byte(fmt.Sprintf("Game over! %s wins!", winner.Name)), winner.Addr)
-			conn.WriteToUDP([]byte(fmt.Sprint("Game over! You lose!", loser.Name)), loser.Addr)
-
-			delete(games, gameKey)
-			delete(battles, game.Player1.Addr.String())
-			delete(battles, game.Player2.Addr.String())
-		default:
-			sendMessageToClient("Invalid command", addr, conn)
+	switch command {
+	case "@join":
+		if len(parts) < 2 {
+			sendMessageToClient("Invalid: Please provide a username.", addr, conn)
+			return
 		}
-	} else {
-		sendMessageToClient("Invalid command format", addr, conn)
+
+		username := parts[1]
+		if checkExist(username) {
+			sendMessageToClient("Invalid: Username already exists.", addr, conn)
+			return
+		}
+
+		clients[username] = &Client{Name: username, Addr: addr}
+
+		// Kiểm tra xem tệp JSON lưu trữ Pokémon của người dùng có tồn tại không
+		filePath := username + "_Pokedex.json"
+		if _, err := os.Stat(filePath); err == nil {
+			// Nếu tệp tồn tại, tải dữ liệu từ tệp
+			var savedPokedex []Pokedex
+			OpenFile(filePath, &savedPokedex)
+			clients[username].userPokedex = savedPokedex
+			if len(savedPokedex) > 0 {
+				clients[username].userCurrentPoke = savedPokedex[0]
+			}
+			fmt.Printf("User [%s] reloaded with saved data.\n", username)
+		} else {
+			// Nếu tệp không tồn tại, khởi tạo người dùng với một Pokémon mặc định
+			OpenFile("data/pokedex.json", &pokedex)
+			for _, poke := range pokedex {
+				if poke.Id == "#0001" {
+					clients[username].userCurrentPoke = poke
+					clients[username].userCurrentPoke.Level = 1
+					clients[username].userPokedex = append(clients[username].userPokedex, poke)
+					break
+				}
+			}
+			fmt.Printf("New user [%s] initialized with default Pokémon.\n", username)
+		}
+
+		sendMessageToClient("["+username+"] Welcome to the game POKE BATTLE!", addr, conn)
+
+		if checkExist(parts[1]) {
+			sendMessageToClient("Invalid", addr, conn)
+		} else {
+			username := parts[1]
+			clients[username] = &Client{Name: username, Addr: addr}
+
+			// Init a default Pokemon
+			OpenFile("data/pokedex.json", &pokedex)
+			for _, poke := range pokedex {
+				if poke.Id == "#0001" {
+					clients[username].userCurrentPoke = poke
+					clients[username].userCurrentPoke.Level = 1
+					clients[username].userPokedex = append(clients[username].userPokedex, clients[username].userCurrentPoke)
+					break
+				}
+			}
+
+			fmt.Printf("User [%s] joined\n", username)
+			sendMessageToClient("["+username+"] Welcome to game POKE BATTLE", addr, conn)
+		}
+
+		if checkExist(parts[1]) {
+			sendMessageToClient("Invalid", addr, conn)
+		} else {
+			username := parts[1]
+			clients[username] = &Client{Name: username, Addr: addr}
+			fmt.Printf("Player [%s] joined\n", username)
+			sendMessageToClient("["+username+"] Welcome to game POKE BATTLE", addr, conn)
+		}
+	case "5":
+		username := getUsernameByAddr(addr)
+		delete(clients, username)
+		fmt.Print("Player [" + username + "] out the game\n")
+		sendMessageToClient("You are out the game", addr, conn)
+
+		if parts[1] == "1" {
+			OpenFile("data\\pokedex.json", &pokedex)
+			for _, poke := range pokedex {
+				if poke.Id == "#0001" {
+					client.userCurrentPoke = poke
+					client.userCurrentPoke.Level = 1
+					client.userPokedex = append(client.userPokedex, client.userCurrentPoke)
+				}
+			}
+			sendMessageToClient("Valid", addr, conn)
+		} else if parts[1] == "2" {
+			OpenFile("data\\pokedex.json", &pokedex)
+			for _, poke := range pokedex {
+				if poke.Id == "#0004" {
+					client.userCurrentPoke = poke
+					client.userCurrentPoke.Level = 1
+					client.userPokedex = append(client.userPokedex, client.userCurrentPoke)
+				}
+			}
+			sendMessageToClient("Valid", addr, conn)
+		} else if parts[1] == "3" {
+			OpenFile("data\\pokedex.json", &pokedex)
+			for _, poke := range pokedex {
+				if poke.Id == "#0007" {
+					client.userCurrentPoke = poke
+					client.userCurrentPoke.Level = 1
+					client.userPokedex = append(client.userPokedex, client.userCurrentPoke)
+				}
+			}
+			sendMessageToClient("Valid", addr, conn)
+		} else {
+			sendMessageToClient("Cannot", addr, conn)
+		}
+		CreateFile(senderName+"_Pokedex.json", client.userPokedex)
+
+		if len(parts) != 2 {
+			sendMessageToClient("Invalid command! Please try again!\n", addr, conn)
+		} else {
+			OpenFile("data\\pokedex.json", &pokedex)
+			for _, poke := range pokedex {
+				if poke.Name == parts[1] {
+					msg := fmt.Sprintf("ID: %s - Name: %s - HP: %d - ATK: %d - DEF: %d - SPEED: %d\n",
+						poke.Id, poke.Name, poke.PokeInfo.Hp, poke.PokeInfo.Atk, poke.PokeInfo.Def, poke.PokeInfo.Speed)
+
+					sendMessageToClient(msg, addr, conn)
+				}
+			}
+
+		}
+	case "2":
+		if client == nil {
+			sendMessageToClient("Error: You must join the game first.", addr, conn)
+			return
+		}
+
+		// Đảm bảo `userCurrentPoke` đã được khởi tạo
+		if client.userCurrentPoke.Id == "" {
+			sendMessageToClient("Error: No current Pokémon available. Please start the game properly.", addr, conn)
+			return
+		}
+
+		// Kiểm tra dữ liệu `pokedex`
+		if len(pokedex) == 0 {
+			OpenFile("data/pokedex.json", &pokedex)
+		}
+		getPoke := RollPoke(client.userCurrentPoke)
+		ListPokemon := "Your new pokemon:\n"
+		for _, poke := range getPoke {
+			ListPokemon += fmt.Sprintf("[ID: %s --Name: %s -- Level: %d]\n", poke.Id, poke.Name, poke.Level)
+		}
+		sendMessageToClient(ListPokemon, addr, conn)
+		client.userPokedex = append(client.userPokedex, getPoke...)
+		CreateFile(senderName+"_Pokedex.json", client.userPokedex)
+	case "1":
+		if client == nil {
+			sendMessageToClient("Error: You must join the game first.", addr, conn)
+			return
+		}
+		msg := "Your Bag:\n"
+		for _, poke := range client.userPokedex {
+			msg += fmt.Sprintf("ID: %s - Name: %s [Level: %d] - HP: %d - ATK: %d - DEF: %d - SPEED: %d\n",
+				poke.Id, poke.Name, poke.Level, poke.PokeInfo.Hp, poke.PokeInfo.Atk, poke.PokeInfo.Def, poke.PokeInfo.Speed)
+		}
+		sendMessageToClient(msg, addr, conn)
+	case "pick":
+		if len(parts) != 4 {
+			sendMessageToClient("Invalid input! Please try again!\n", addr, conn)
+		} else {
+			confirm := "Your pokemon choosen:\n"
+			if checkPokeExist(parts[1], parts[2], parts[3], client) {
+				for _, poke := range client.userPokedex {
+					if parts[1] == poke.Id {
+						confirm += poke.Name + " "
+						client.battlePoke = append(client.battlePoke, poke)
+					}
+					if parts[2] == poke.Id {
+						confirm += poke.Name + " "
+						client.battlePoke = append(client.battlePoke, poke)
+					}
+					if parts[3] == poke.Id {
+						confirm += poke.Name + " "
+						client.battlePoke = append(client.battlePoke, poke)
+					}
+				}
+				confirm += "\n(Usage: @play to start!)\n"
+				sendMessageToClient(confirm, addr, conn)
+			} else {
+				sendMessageToClient("Poke you choose is not have in your pokedex!", addr, conn)
+			}
+		}
+	case "3":
+		competitors := "Current player:\n"
+		for _, user := range clients {
+			if user.Name != senderName {
+				competitors += fmt.Sprintf("[Player: %s]\n", user.Name)
+			}
+		}
+		sendMessageToClient(competitors, addr, conn)
+	case "4":
+		for _, user := range clients {
+			if user.Name == parts[1] || parts[1] != senderName { // if exist username like this then
+				for _, bt := range battles {
+					if user == bt {
+						sendMessageToClient(parts[1]+" is in battle, please try later!", addr, conn)
+						return
+					}
+				}
+				invitation[addr.String()] = senderName
+				invitation[user.Addr.String()] = parts[1] // invitation with index string of that user addr ---> get value of part[1]
+
+			} else if parts[1] == senderName {
+				sendMessageToClient("Cannot invite yourself!!!", addr, conn)
+				return
+			}
+		}
+		sendMessageToClient("Waiting for your competitor!", addr, conn)
+		sendPrivateMessage(senderName+" send you a request to battle!(@accept yes/no)\n", parts[1], conn, addr)
+		// I think error happen when 2 clients @invite will add into battle
+	case "accept":
+		if strings.ToLower(parts[1]) == "yes" {
+			receiverName := invitation[addr.String()]
+			var inviterName string
+			for _, invite := range invitation {
+				if receiverName != invite {
+					inviterName = invite
+				}
+			}
+			for _, user := range clients {
+				if user.Name == inviterName {
+					sendMessageToClient(senderName+" has accepted the battle\n(Usage: @pick #id_pokemon1 #id_pokemon2 #id_pokemon3)\n", user.Addr, conn)
+					battles[user.Addr.String()] = user // inviter client
+
+				}
+				if user.Addr.String() == addr.String() {
+					battles[addr.String()] = user // receiver client
+				}
+			}
+			sendMessageToClient("You are join the battle!\n(Usage: @pick #id_pokemon1 #id_pokemon2 #id_pokemon3)\n", addr, conn)
+		} else if strings.ToLower(parts[1]) == "no" {
+			var inviterName string
+			for _, invite := range invitation {
+				if senderName != invite {
+					inviterName = invite
+				}
+			}
+			for _, user := range clients {
+				if user.Name == inviterName {
+					sendMessageToClient("Your competitor is decline\nChoose another user or other task", user.Addr, conn)
+				}
+			}
+			delete(invitation, addr.String())
+			sendMessageToClient("You decline successfull\nLet continue other tasks\n", addr, conn)
+		} else {
+			sendMessageToClient("Invalid command!\n", addr, conn)
+		}
+	case "start":
+		player, inBattle := battles[addr.String()]
+		if !inBattle {
+			sendMessageToClient("You are not in the battle! Cannot use this command!", addr, conn)
+			return
+		}
+		gameKey := ""
+		var opponent *Client
+		for _, bat := range battles {
+			if bat.Addr.String() != addr.String() {
+				opponent = battles[bat.Addr.String()]
+				gameKey = fmt.Sprintf("%s:%s", player.Name, opponent.Name)
+			}
+		}
+		if _, inBattle := games[gameKey]; inBattle {
+			sendMessageToClient("A game is already in process.", addr, conn)
+			return
+		}
+		if opponent.battlePoke[0].PokeInfo.Speed > player.battlePoke[0].PokeInfo.Speed {
+			state = opponent.Addr
+		} else {
+			state = player.Addr
+		}
+		sendMessageToClient("You first", state, conn)
+
+		battle := &Battle{
+			Player1:      player,
+			Player2:      opponent,
+			CurrentPoke1: &player.battlePoke[0],
+			CurrentPoke2: &opponent.battlePoke[0],
+			CurrentTurn:  state,
+		}
+		games[gameKey] = battle
+	case "@attack":
+		handleAttack(addr, conn)
+	case "@switch":
+		if len(parts) != 2 {
+			sendMessageToClient("Invalid command!", addr, conn)
+			return
+		}
+		handleSwitch(conn, addr, parts[1])
+	case "@surrender":
+		opponent, inBattle := battles[addr.String()]
+
+		if !inBattle {
+			sendMessageToClient("You are not in the battle! Cannot use this command!", addr, conn)
+			return
+		}
+		var player *Client
+		gameKey := ""
+		for _, bat := range battles {
+			if bat.Addr.String() != addr.String() {
+				player = battles[bat.Addr.String()]
+				gameKey = fmt.Sprintf("%s:%s", player.Name, opponent.Name)
+			}
+		}
+		game, inGame := games[gameKey]
+		if !inGame {
+			sendMessageToClient("You are not already\n(Usage: @play to ready the battle)", addr, conn)
+			return
+		}
+
+		winner := player
+		loser := opponent
+		conn.WriteToUDP([]byte(fmt.Sprintf("Game over! %s wins!", winner.Name)), winner.Addr)
+		conn.WriteToUDP([]byte(fmt.Sprint("Game over! You lose!", loser.Name)), loser.Addr)
+
+		delete(games, gameKey)
+		delete(battles, game.Player1.Addr.String())
+		delete(battles, game.Player2.Addr.String())
+	default:
+		sendMessageToClient("Invalid command", addr, conn)
 	}
+
 }
 
 func getUsernameByAddr(addr *net.UDPAddr) string {
@@ -398,9 +454,20 @@ func getUsernameByAddr(addr *net.UDPAddr) string {
 }
 
 func sendMessageToClient(message string, addr *net.UDPAddr, conn *net.UDPConn) {
-	_, err := conn.WriteToUDP([]byte(message), addr)
-	if err != nil {
-		fmt.Println("Error sending message:", err)
+	maxMessageSize := 512 // Giới hạn kích thước mỗi gói tin (thấp hơn giới hạn UDP để an toàn)
+
+	// Chia nhỏ thông báo nếu cần
+	for len(message) > 0 {
+		if len(message) > maxMessageSize {
+			conn.WriteToUDP([]byte(message[:maxMessageSize]), addr)
+			message = message[maxMessageSize:]
+		} else {
+			_, err := conn.WriteToUDP([]byte(message), addr)
+			if err != nil {
+				fmt.Println("Error sending message:", err)
+			}
+			break
+		}
 	}
 }
 
@@ -431,11 +498,19 @@ func OpenFile(fileName string, key interface{}) {
 	decoder := json.NewDecoder(inFile)
 	err = decoder.Decode(key)
 	if err != nil {
-		log.Fatal("Error to open file: ", err)
+		log.Fatal("Error decoding file: ", err)
 		os.Exit(1)
 	}
 	inFile.Close()
+
+	// Làm sạch dữ liệu (ví dụ: xóa ký tự xuống dòng trong tên Pokémon)
+	if pokedexData, ok := key.(*[]Pokedex); ok {
+		for i := range *pokedexData {
+			(*pokedexData)[i].Name = strings.ReplaceAll((*pokedexData)[i].Name, "\n", "")
+		}
+	}
 }
+
 func CreateFile(fileName string, key interface{}) {
 	jsonData, err := json.MarshalIndent(key, "", "  ")
 	if err != nil {

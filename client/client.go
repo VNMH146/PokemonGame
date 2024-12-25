@@ -48,11 +48,11 @@ func main() {
 	}
 
 	fmt.Print("Joined the game! You have one Bulbasaur,open your bag to check!\nUsages:\n" +
-		"@bag to open your pokedex\n" +
-		"@catch to catch 4 Pokemon\n" +
-		"@list to list the players\n" +
-		"@invite +username to join the battle\n" +
-		"@quit to quit the game\n" +
+		"1.Open your pokedex\n" +
+		"2.Catch 4 Pokemon\n" +
+		"3.List the players\n" +
+		"4.Invite to join the battle\n" +
+		"5.Quit the game\n" +
 		"Enter your choice: ")
 
 	go receiveMessages(conn)
