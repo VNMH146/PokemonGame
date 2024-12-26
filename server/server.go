@@ -154,39 +154,13 @@ func handleMessage(message string, addr *net.UDPAddr, conn *net.UDPConn) {
 				}
 			}
 			fmt.Printf("New user [%s] initialized with default Pokémon.\n", username)
+
+			// Lưu tệp JSON cho người dùng mới
+			CreateFile(filePath, clients[username].userPokedex)
 		}
 
 		sendMessageToClient("["+username+"] Welcome to the game POKE BATTLE!", addr, conn)
 
-		if checkExist(parts[1]) {
-			sendMessageToClient("Invalid", addr, conn)
-		} else {
-			username := parts[1]
-			clients[username] = &Client{Name: username, Addr: addr}
-
-			// Init a default Pokemon
-			OpenFile("data/pokedex.json", &pokedex)
-			for _, poke := range pokedex {
-				if poke.Id == "#0001" {
-					clients[username].userCurrentPoke = poke
-					clients[username].userCurrentPoke.Level = 1
-					clients[username].userPokedex = append(clients[username].userPokedex, clients[username].userCurrentPoke)
-					break
-				}
-			}
-
-			fmt.Printf("User [%s] joined\n", username)
-			sendMessageToClient("["+username+"] Welcome to game POKE BATTLE", addr, conn)
-		}
-
-		if checkExist(parts[1]) {
-			sendMessageToClient("Invalid", addr, conn)
-		} else {
-			username := parts[1]
-			clients[username] = &Client{Name: username, Addr: addr}
-			fmt.Printf("Player [%s] joined\n", username)
-			sendMessageToClient("["+username+"] Welcome to game POKE BATTLE", addr, conn)
-		}
 	case "5":
 		username := getUsernameByAddr(addr)
 		delete(clients, username)
@@ -432,6 +406,8 @@ func handleMessage(message string, addr *net.UDPAddr, conn *net.UDPConn) {
 
 		winner := player
 		loser := opponent
+		// Phân phối kinh nghiệm
+		distributeExp(winner, loser)
 		conn.WriteToUDP([]byte(fmt.Sprintf("Game over! %s wins!", winner.Name)), winner.Addr)
 		conn.WriteToUDP([]byte(fmt.Sprint("Game over! You lose!", loser.Name)), loser.Addr)
 
@@ -634,6 +610,7 @@ func handleAttack(addr *net.UDPAddr, conn *net.UDPConn) {
 	}
 
 	if game.Player1.battlePoke == nil {
+		distributeExp(game.Player2, game.Player1)
 		winner := game.Player2
 		loser := game.Player1
 		conn.WriteToUDP([]byte(fmt.Sprintf("Game over! %s wins!", winner.Name)), winner.Addr)
@@ -643,6 +620,7 @@ func handleAttack(addr *net.UDPAddr, conn *net.UDPConn) {
 		delete(battles, game.Player1.Addr.String())
 		delete(battles, game.Player2.Addr.String())
 	} else if game.Player2.battlePoke == nil {
+		distributeExp(game.Player2, game.Player1)
 		winner := game.Player1
 		loser := game.Player2
 		conn.WriteToUDP([]byte(fmt.Sprintf("Game over! %s wins!", winner.Name)), winner.Addr)
@@ -753,6 +731,28 @@ func getDmgNumber(pAtk Pokedex, pRecive Pokedex) (int, int) {
 	special = float32(pAtk.PokeInfo.SpAtk)*typeDefense - float32(pRecive.PokeInfo.SpDef)
 	return int(normal), int(special)
 }
+
+func distributeExp(winner *Client, loser *Client) {
+	totalExp := 0
+
+	// Tính tổng kinh nghiệm của tất cả Pokémon trong đội thua
+	for _, poke := range loser.battlePoke {
+		totalExp += poke.Exp
+	}
+
+	// Kinh nghiệm thưởng cho mỗi Pokémon của đội thắng
+	expReward := totalExp / len(winner.battlePoke)
+
+	// Cập nhật kinh nghiệm và cấp độ cho từng Pokémon trong đội thắng
+	for i := range winner.battlePoke {
+		winner.battlePoke[i].Exp += expReward
+		totalExpForNextLevel, _ := getLevelExp(winner.battlePoke[i].Level)
+		if winner.battlePoke[i].Exp >= totalExpForNextLevel {
+			winner.battlePoke[i].Level += 1
+		}
+	}
+}
+
 func getLevelExp(level int) (int, int) {
 
 	totalExp := (level + 1) * (level + 1) * (level + 1)

@@ -28,21 +28,25 @@ func main() {
 		fmt.Print("Enter your username: ")
 		username, _ := reader.ReadString('\n')
 		username = strings.TrimSpace(username)
+
 		_, err = conn.Write([]byte("@join " + username))
 		if err != nil {
 			fmt.Println("Error joining chat:", err)
 			return
 		}
+
 		buffer := make([]byte, 1024)
 		n, _, err := conn.ReadFromUDP(buffer)
 		if err != nil {
 			fmt.Println("Error reading from UDP:", err)
 			return
 		}
-		if string(buffer[:n]) == "Invalid" {
+
+		response := strings.TrimSpace(string(buffer[:n]))
+		if response == "Invalid: Username already exists." {
 			fmt.Println("Username already used, please choose another!")
 		} else {
-			fmt.Println(string(buffer[:n]))
+			fmt.Println(response)
 			break
 		}
 	}

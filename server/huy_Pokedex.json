@@ -1,0 +1,194 @@
+[
+  {
+    "ID": "#0001",
+    "Name": "Bulbasaur",
+    "Level": 0,
+    "Exp": 0,
+    "types": [
+      "Grass",
+      "Poison"
+    ],
+    "URL": "/pokedex/bulbasaur",
+    "Poke-Information": {
+      "HP": 45,
+      "ATK": 49,
+      "DEF": 49,
+      "Sp.Atk": 65,
+      "Sp.Def": 65,
+      "Speed": 45,
+      "Type-Defenses": {
+        "Normal": 1,
+        "Fire": 2,
+        "Water": 0.5,
+        "Electric": 0.5,
+        "Grass": 0.25,
+        "Ice": 2,
+        "Fighting": 0.5,
+        "Poison": 1,
+        "Ground": 1,
+        "Flying": 2,
+        "Psychic": 2,
+        "Bug": 1,
+        "Rock": 1,
+        "Ghost": 1,
+        "Dragon": 1,
+        "Dark": 1,
+        "Steel": 1,
+        "Fairy": 0.5
+      }
+    }
+  },
+  {
+    "ID": "#0120",
+    "Name": "Staryu",
+    "Level": 1,
+    "Exp": 0,
+    "types": [
+      "Water"
+    ],
+    "URL": "/pokedex/staryu",
+    "Poke-Information": {
+      "HP": 30,
+      "ATK": 45,
+      "DEF": 55,
+      "Sp.Atk": 70,
+      "Sp.Def": 55,
+      "Speed": 85,
+      "Type-Defenses": {
+        "Normal": 1,
+        "Fire": 0.5,
+        "Water": 0.5,
+        "Electric": 2,
+        "Grass": 2,
+        "Ice": 0.5,
+        "Fighting": 1,
+        "Poison": 1,
+        "Ground": 1,
+        "Flying": 1,
+        "Psychic": 1,
+        "Bug": 1,
+        "Rock": 1,
+        "Ghost": 1,
+        "Dragon": 1,
+        "Dark": 1,
+        "Steel": 0.5,
+        "Fairy": 1
+      }
+    }
+  },
+  {
+    "ID": "#0264",
+    "Name": "Linoone",
+    "Level": 1,
+    "Exp": 0,
+    "types": [
+      "Normal"
+    ],
+    "URL": "/pokedex/linoone",
+    "Poke-Information": {
+      "HP": 78,
+      "ATK": 70,
+      "DEF": 61,
+      "Sp.Atk": 50,
+      "Sp.Def": 61,
+      "Speed": 100,
+      "Type-Defenses": {
+        "Normal": 1,
+        "Fire": 1,
+        "Water": 1,
+        "Electric": 1,
+        "Grass": 1,
+        "Ice": 1,
+        "Fighting": 4,
+        "Poison": 1,
+        "Ground": 1,
+        "Flying": 1,
+        "Psychic": 0,
+        "Bug": 2,
+        "Rock": 1,
+        "Ghost": 0,
+        "Dragon": 1,
+        "Dark": 0.5,
+        "Steel": 1,
+        "Fairy": 2
+      }
+    }
+  },
+  {
+    "ID": "#0515",
+    "Name": "Panpour",
+    "Level": 1,
+    "Exp": 0,
+    "types": [
+      "Water"
+    ],
+    "URL": "/pokedex/panpour",
+    "Poke-Information": {
+      "HP": 50,
+      "ATK": 53,
+      "DEF": 48,
+      "Sp.Atk": 53,
+      "Sp.Def": 48,
+      "Speed": 64,
+      "Type-Defenses": {
+        "Normal": 1,
+        "Fire": 0.5,
+        "Water": 0.5,
+        "Electric": 2,
+        "Grass": 2,
+        "Ice": 0.5,
+        "Fighting": 1,
+        "Poison": 1,
+        "Ground": 1,
+        "Flying": 1,
+        "Psychic": 1,
+        "Bug": 1,
+        "Rock": 1,
+        "Ghost": 1,
+        "Dragon": 1,
+        "Dark": 1,
+        "Steel": 0.5,
+        "Fairy": 1
+      }
+    }
+  },
+  {
+    "ID": "#0826",
+    "Name": "Orbeetle",
+    "Level": 1,
+    "Exp": 0,
+    "types": [
+      "Bug",
+      "Psychic"
+    ],
+    "URL": "/pokedex/orbeetle",
+    "Poke-Information": {
+      "HP": 60,
+      "ATK": 45,
+      "DEF": 110,
+      "Sp.Atk": 80,
+      "Sp.Def": 120,
+      "Speed": 90,
+      "Type-Defenses": {
+        "Normal": 1,
+        "Fire": 2,
+        "Water": 1,
+        "Electric": 1,
+        "Grass": 0.5,
+        "Ice": 1,
+        "Fighting": 0.25,
+        "Poison": 1,
+        "Ground": 0.5,
+        "Flying": 2,
+        "Psychic": 0.5,
+        "Bug": 2,
+        "Rock": 2,
+        "Ghost": 2,
+        "Dragon": 1,
+        "Dark": 2,
+        "Steel": 1,
+        "Fairy": 1
+      }
+    }
+  }
+]
