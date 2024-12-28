@@ -153,13 +153,13 @@ func handleMessage(message string, addr *net.UDPAddr, conn *net.UDPConn) {
 					break
 				}
 			}
-			fmt.Printf("New user [%s] initialized with default Pokémon.\n", username)
+			fmt.Printf("New user [%s] initialized with default Pokemon.\n", username)
 
 			// Lưu tệp JSON cho người dùng mới
 			CreateFile(filePath, clients[username].userPokedex)
 		}
 
-		sendMessageToClient("["+username+"] Welcome to the game POKE BATTLE!", addr, conn)
+		sendMessageToClient("["+username+"] Welcome to the POKEMON game!", addr, conn)
 
 	case "5":
 		username := getUsernameByAddr(addr)
@@ -251,7 +251,7 @@ func handleMessage(message string, addr *net.UDPAddr, conn *net.UDPConn) {
 				poke.Id, poke.Name, poke.Level, poke.PokeInfo.Hp, poke.PokeInfo.Atk, poke.PokeInfo.Def, poke.PokeInfo.Speed)
 		}
 		sendMessageToClient(msg, addr, conn)
-	case "pick":
+	case "p":
 		if len(parts) != 4 {
 			sendMessageToClient("Invalid input! Please try again!\n", addr, conn)
 		} else {
@@ -271,7 +271,7 @@ func handleMessage(message string, addr *net.UDPAddr, conn *net.UDPConn) {
 						client.battlePoke = append(client.battlePoke, poke)
 					}
 				}
-				confirm += "\n(Usage: @play to start!)\n"
+				confirm += "\n(Usage: Enter start to start battle!)\n"
 				sendMessageToClient(confirm, addr, conn)
 			} else {
 				sendMessageToClient("Poke you choose is not have in your pokedex!", addr, conn)
@@ -303,7 +303,7 @@ func handleMessage(message string, addr *net.UDPAddr, conn *net.UDPConn) {
 			}
 		}
 		sendMessageToClient("Waiting for your competitor!", addr, conn)
-		sendPrivateMessage(senderName+" send you a request to battle!(@accept yes/no)\n", parts[1], conn, addr)
+		sendPrivateMessage(senderName+" send you a request to battle!(accept yes/no)\n", parts[1], conn, addr)
 		// I think error happen when 2 clients @invite will add into battle
 	case "accept":
 		if strings.ToLower(parts[1]) == "yes" {
@@ -375,15 +375,15 @@ func handleMessage(message string, addr *net.UDPAddr, conn *net.UDPConn) {
 			CurrentTurn:  state,
 		}
 		games[gameKey] = battle
-	case "@attack":
+	case "attack":
 		handleAttack(addr, conn)
-	case "@switch":
+	case "switch":
 		if len(parts) != 2 {
 			sendMessageToClient("Invalid command!", addr, conn)
 			return
 		}
 		handleSwitch(conn, addr, parts[1])
-	case "@surrender":
+	case "surrender":
 		opponent, inBattle := battles[addr.String()]
 
 		if !inBattle {
@@ -581,8 +581,14 @@ func handleAttack(addr *net.UDPAddr, conn *net.UDPConn) {
 	}
 
 	// Kiểm tra nếu Pokémon tấn công đã bị hạ
+	// Kiểm tra nếu Pokémon tấn công hoặc phòng thủ đã bị hạ
 	if attacker.PokeInfo.Hp <= 0 {
 		sendMessageToClient("Your current Pokémon has fainted! Please switch to another Pokémon.", addr, conn)
+		return
+	}
+
+	if defender.PokeInfo.Hp <= 0 {
+		sendMessageToClient(fmt.Sprintf("Your opponent's Pokémon has fainted! Waiting for them to switch Pokémon."), addr, conn)
 		return
 	}
 
@@ -691,23 +697,28 @@ func handleSwitch(conn *net.UDPConn, addr *net.UDPAddr, id string) {
 	if addr.String() == game.Player1.Addr.String() {
 		for i, poke := range game.Player1.battlePoke {
 			if poke.Id == id {
-				game.CurrentPoke1 = &game.Player1.battlePoke[i]
+				game.CurrentPoke1 = &game.Player1.battlePoke[i] // Cập nhật Pokémon hiện tại
 				sendMessageToClient(fmt.Sprintf("You switched to %s.", game.CurrentPoke1.Name), game.Player1.Addr, conn)
 				sendMessageToClient(fmt.Sprintf("Your opponent switched to %s.", game.CurrentPoke1.Name), game.Player2.Addr, conn)
-				state = game.Player2.Addr
+				state = game.Player2.Addr // Chuyển lượt chơi
 				return
 			}
 		}
 	} else if addr.String() == game.Player2.Addr.String() {
 		for i, poke := range game.Player2.battlePoke {
 			if poke.Id == id {
-				game.CurrentPoke2 = &game.Player2.battlePoke[i]
+				game.CurrentPoke2 = &game.Player2.battlePoke[i] // Cập nhật Pokémon hiện tại
 				sendMessageToClient(fmt.Sprintf("You switched to %s.", game.CurrentPoke2.Name), game.Player2.Addr, conn)
 				sendMessageToClient(fmt.Sprintf("Your opponent switched to %s.", game.CurrentPoke2.Name), game.Player1.Addr, conn)
-				state = game.Player1.Addr
+				state = game.Player1.Addr // Chuyển lượt chơi
 				return
 			}
 		}
+	}
+
+	if game.CurrentPoke1.PokeInfo.Hp == 0 || game.CurrentPoke2.PokeInfo.Hp == 0 {
+		sendMessageToClient("Opponent needs to switch Pokémon before continuing.", addr, conn)
+		return
 	}
 
 	sendMessageToClient("Invalid Pokémon ID. Please try again.", addr, conn)

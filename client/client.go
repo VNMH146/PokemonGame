@@ -53,9 +53,9 @@ func main() {
 
 	fmt.Print("Joined the game! You have one Bulbasaur,open your bag to check!\nUsages:\n" +
 		"1.Open your pokedex\n" +
-		"2.Catch 4 Pokemon\n" +
+		"2.Catch random 4 Pokemon\n" +
 		"3.List the players\n" +
-		"4.Invite to join the battle\n" +
+		"4.Invite player to join the battle\n" +
 		"5.Quit the game\n" +
 		"Enter your choice: ")
 
