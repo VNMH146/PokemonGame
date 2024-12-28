@@ -316,7 +316,7 @@ func handleMessage(message string, addr *net.UDPAddr, conn *net.UDPConn) {
 			}
 			for _, user := range clients {
 				if user.Name == inviterName {
-					sendMessageToClient(senderName+" has accepted the battle\n(Usage: @pick #id_pokemon1 #id_pokemon2 #id_pokemon3)\n", user.Addr, conn)
+					sendMessageToClient(senderName+" has accepted the battle\n(Usage: p #id_pokemon1 #id_pokemon2 #id_pokemon3)\n", user.Addr, conn)
 					battles[user.Addr.String()] = user // inviter client
 
 				}
@@ -324,7 +324,7 @@ func handleMessage(message string, addr *net.UDPAddr, conn *net.UDPConn) {
 					battles[addr.String()] = user // receiver client
 				}
 			}
-			sendMessageToClient("You are join the battle!\n(Usage: @pick #id_pokemon1 #id_pokemon2 #id_pokemon3)\n", addr, conn)
+			sendMessageToClient("You are join the battle!\n(Usage: p #id_pokemon1 #id_pokemon2 #id_pokemon3)\n", addr, conn)
 		} else if strings.ToLower(parts[1]) == "no" {
 			var inviterName string
 			for _, invite := range invitation {
@@ -479,7 +479,6 @@ func OpenFile(fileName string, key interface{}) {
 	}
 	inFile.Close()
 
-	// Làm sạch dữ liệu (ví dụ: xóa ký tự xuống dòng trong tên Pokémon)
 	if pokedexData, ok := key.(*[]Pokedex); ok {
 		for i := range *pokedexData {
 			(*pokedexData)[i].Name = strings.ReplaceAll((*pokedexData)[i].Name, "\n", "")
@@ -570,7 +569,6 @@ func handleAttack(addr *net.UDPAddr, conn *net.UDPConn) {
 		return
 	}
 
-	// Xác định attacker và defender
 	var attacker, defender *Pokedex
 	if addr.String() == game.Player1.Addr.String() {
 		attacker = game.CurrentPoke1
@@ -580,8 +578,6 @@ func handleAttack(addr *net.UDPAddr, conn *net.UDPConn) {
 		defender = game.CurrentPoke1
 	}
 
-	// Kiểm tra nếu Pokémon tấn công đã bị hạ
-	// Kiểm tra nếu Pokémon tấn công hoặc phòng thủ đã bị hạ
 	if attacker.PokeInfo.Hp <= 0 {
 		sendMessageToClient("Your current Pokémon has fainted! Please switch to another Pokémon.", addr, conn)
 		return
@@ -601,28 +597,23 @@ func handleAttack(addr *net.UDPAddr, conn *net.UDPConn) {
 		_, damage = getDmgNumber(*attacker, *defender)
 	}
 
-	// Log chi tiết trước khi trừ HP
 	fmt.Printf("[LOG] %s (HP: %d) attacks %s (HP: %d) with %s attack.\n",
 		attacker.Name, attacker.PokeInfo.Hp, defender.Name, defender.PokeInfo.Hp,
 		map[int]string{0: "Normal", 1: "Special"}[attackType])
 
-	// Trừ HP của defender
 	defender.PokeInfo.Hp -= damage
 	if defender.PokeInfo.Hp < 0 {
 		defender.PokeInfo.Hp = 0
 	}
 
-	// Log chi tiết sau khi trừ HP
 	fmt.Printf("[LOG] %s dealt %d damage to %s. Remaining HP: %d\n",
 		attacker.Name, damage, defender.Name, defender.PokeInfo.Hp)
 
-	// Gửi thông báo trạng thái
 	sendMessageToClient(fmt.Sprintf("%s attacked %s! Your %s's HP: %d\n%s's opponent - HP: %d",
 		attacker.Name, defender.Name, attacker.Name, attacker.PokeInfo.Hp, defender.Name, defender.PokeInfo.Hp), opponent.Addr, conn)
 
 	sendMessageToClient(fmt.Sprintf("%s attacked and remaining HP: %d", attacker.Name, attacker.PokeInfo.Hp), player.Addr, conn)
 
-	// Kiểm tra nếu Pokémon bị hạ
 	if defender.PokeInfo.Hp == 0 {
 		fmt.Printf("[LOG] %s has fainted.\n", defender.Name)
 
@@ -636,7 +627,6 @@ func handleAttack(addr *net.UDPAddr, conn *net.UDPConn) {
 		return
 	}
 
-	// Đổi lượt chơi
 	if addr.String() == game.Player1.Addr.String() {
 		state = game.Player2.Addr
 	} else {
@@ -667,11 +657,10 @@ func handlePokemonDefeated(game *Battle, conn *net.UDPConn, addr *net.UDPAddr) {
 }
 
 func cleanUpGame(game *Battle) {
-	// Xóa game khỏi danh sách
+
 	gameKey := fmt.Sprintf("%s:%s", game.Player1.Name, game.Player2.Name)
 	delete(games, gameKey)
 
-	// Xóa thông tin người chơi khỏi battles
 	delete(battles, game.Player1.Addr.String())
 	delete(battles, game.Player2.Addr.String())
 
@@ -697,20 +686,20 @@ func handleSwitch(conn *net.UDPConn, addr *net.UDPAddr, id string) {
 	if addr.String() == game.Player1.Addr.String() {
 		for i, poke := range game.Player1.battlePoke {
 			if poke.Id == id {
-				game.CurrentPoke1 = &game.Player1.battlePoke[i] // Cập nhật Pokémon hiện tại
+				game.CurrentPoke1 = &game.Player1.battlePoke[i]
 				sendMessageToClient(fmt.Sprintf("You switched to %s.", game.CurrentPoke1.Name), game.Player1.Addr, conn)
 				sendMessageToClient(fmt.Sprintf("Your opponent switched to %s.", game.CurrentPoke1.Name), game.Player2.Addr, conn)
-				state = game.Player2.Addr // Chuyển lượt chơi
+				state = game.Player2.Addr
 				return
 			}
 		}
 	} else if addr.String() == game.Player2.Addr.String() {
 		for i, poke := range game.Player2.battlePoke {
 			if poke.Id == id {
-				game.CurrentPoke2 = &game.Player2.battlePoke[i] // Cập nhật Pokémon hiện tại
+				game.CurrentPoke2 = &game.Player2.battlePoke[i]
 				sendMessageToClient(fmt.Sprintf("You switched to %s.", game.CurrentPoke2.Name), game.Player2.Addr, conn)
 				sendMessageToClient(fmt.Sprintf("Your opponent switched to %s.", game.CurrentPoke2.Name), game.Player1.Addr, conn)
-				state = game.Player1.Addr // Chuyển lượt chơi
+				state = game.Player1.Addr
 				return
 			}
 		}
@@ -725,7 +714,7 @@ func handleSwitch(conn *net.UDPConn, addr *net.UDPAddr, id string) {
 }
 
 func getDmgNumber(pAtk Pokedex, pRecive Pokedex) (int, int) {
-	// Bản đồ hệ số kháng
+
 	types := map[string]float32{
 		"Normal":   pRecive.PokeInfo.TypeDefense.Normal,
 		"Fire":     pRecive.PokeInfo.TypeDefense.Fire,

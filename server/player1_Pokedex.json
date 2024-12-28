@@ -1,0 +1,194 @@
+[
+  {
+    "ID": "#0001",
+    "Name": "Bulbasaur",
+    "Level": 0,
+    "Exp": 0,
+    "types": [
+      "Grass",
+      "Poison"
+    ],
+    "URL": "/pokedex/bulbasaur",
+    "Poke-Information": {
+      "HP": 45,
+      "ATK": 49,
+      "DEF": 49,
+      "Sp.Atk": 65,
+      "Sp.Def": 65,
+      "Speed": 45,
+      "Type-Defenses": {
+        "Normal": 1,
+        "Fire": 2,
+        "Water": 0.5,
+        "Electric": 0.5,
+        "Grass": 0.25,
+        "Ice": 2,
+        "Fighting": 0.5,
+        "Poison": 1,
+        "Ground": 1,
+        "Flying": 2,
+        "Psychic": 2,
+        "Bug": 1,
+        "Rock": 1,
+        "Ghost": 1,
+        "Dragon": 1,
+        "Dark": 1,
+        "Steel": 1,
+        "Fairy": 0.5
+      }
+    }
+  },
+  {
+    "ID": "#0971",
+    "Name": "Greavard",
+    "Level": 1,
+    "Exp": 0,
+    "types": [
+      "Ghost"
+    ],
+    "URL": "/pokedex/greavard",
+    "Poke-Information": {
+      "HP": 50,
+      "ATK": 61,
+      "DEF": 60,
+      "Sp.Atk": 30,
+      "Sp.Def": 55,
+      "Speed": 34,
+      "Type-Defenses": {
+        "Normal": 0,
+        "Fire": 2,
+        "Water": 1,
+        "Electric": 1,
+        "Grass": 1,
+        "Ice": 1,
+        "Fighting": 0,
+        "Poison": 0.5,
+        "Ground": 1,
+        "Flying": 1,
+        "Psychic": 1,
+        "Bug": 0.5,
+        "Rock": 1,
+        "Ghost": 2,
+        "Dragon": 1,
+        "Dark": 2,
+        "Steel": 1,
+        "Fairy": 1
+      }
+    }
+  },
+  {
+    "ID": "#0518",
+    "Name": "Musharna",
+    "Level": 1,
+    "Exp": 0,
+    "types": [
+      "Psychic"
+    ],
+    "URL": "/pokedex/musharna",
+    "Poke-Information": {
+      "HP": 116,
+      "ATK": 55,
+      "DEF": 85,
+      "Sp.Atk": 107,
+      "Sp.Def": 95,
+      "Speed": 29,
+      "Type-Defenses": {
+        "Normal": 1,
+        "Fire": 1,
+        "Water": 1,
+        "Electric": 1,
+        "Grass": 1,
+        "Ice": 1,
+        "Fighting": 0.5,
+        "Poison": 1,
+        "Ground": 1,
+        "Flying": 1,
+        "Psychic": 0.5,
+        "Bug": 2,
+        "Rock": 1,
+        "Ghost": 2,
+        "Dragon": 1,
+        "Dark": 2,
+        "Steel": 1,
+        "Fairy": 1
+      }
+    }
+  },
+  {
+    "ID": "#0268",
+    "Name": "Cascoon",
+    "Level": 1,
+    "Exp": 0,
+    "types": [
+      "Bug"
+    ],
+    "URL": "/pokedex/cascoon",
+    "Poke-Information": {
+      "HP": 50,
+      "ATK": 35,
+      "DEF": 55,
+      "Sp.Atk": 25,
+      "Sp.Def": 25,
+      "Speed": 15,
+      "Type-Defenses": {
+        "Normal": 1,
+        "Fire": 2,
+        "Water": 1,
+        "Electric": 1,
+        "Grass": 0.5,
+        "Ice": 1,
+        "Fighting": 0.5,
+        "Poison": 1,
+        "Ground": 0.5,
+        "Flying": 2,
+        "Psychic": 1,
+        "Bug": 1,
+        "Rock": 2,
+        "Ghost": 1,
+        "Dragon": 1,
+        "Dark": 1,
+        "Steel": 1,
+        "Fairy": 1
+      }
+    }
+  },
+  {
+    "ID": "#0941",
+    "Name": "Kilowattrel",
+    "Level": 1,
+    "Exp": 0,
+    "types": [
+      "Electric",
+      "Flying"
+    ],
+    "URL": "/pokedex/kilowattrel",
+    "Poke-Information": {
+      "HP": 70,
+      "ATK": 70,
+      "DEF": 60,
+      "Sp.Atk": 105,
+      "Sp.Def": 60,
+      "Speed": 125,
+      "Type-Defenses": {
+        "Normal": 1,
+        "Fire": 1,
+        "Water": 1,
+        "Electric": 1,
+        "Grass": 0.5,
+        "Ice": 2,
+        "Fighting": 0.5,
+        "Poison": 1,
+        "Ground": 0,
+        "Flying": 0.5,
+        "Psychic": 1,
+        "Bug": 0.5,
+        "Rock": 2,
+        "Ghost": 1,
+        "Dragon": 1,
+        "Dark": 1,
+        "Steel": 0.5,
+        "Fairy": 1
+      }
+    }
+  }
+]
